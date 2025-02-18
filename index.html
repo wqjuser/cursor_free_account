@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cursor Pro Trail 账号分享</title>
+    <style>
+      .debug-warning {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        z-index: 10000;
+        font-size: 16px;
+        max-width: 80%;
+        animation: fadeIn 0.3s ease;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+    </style>
+    <script>
+      (function() {
+        let warningTimeout;
+        
+        function showWarning() {
+          // 如果已经存在提示，则不重复显示
+          if (document.querySelector('.debug-warning')) {
+            return;
+          }
+          
+          const warning = document.createElement('div');
+          warning.className = 'debug-warning';
+          warning.textContent = '为了让更多人有账号使用，请不要使用开发者工具';
+          document.body.appendChild(warning);
+          
+          // 3秒后自动移除提示
+          clearTimeout(warningTimeout);
+          warningTimeout = setTimeout(() => {
+            if (warning.parentNode) {
+              warning.parentNode.removeChild(warning);
+            }
+          }, 3000);
+        }
+
+        // 禁用F12和其他开发者工具快捷键
+        document.addEventListener('keydown', function(e) {
+          if (
+            e.key === 'F12' || 
+            (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+            (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+            (e.ctrlKey && e.shiftKey && e.key === 'C') ||
+            (e.ctrlKey && e.key === 'U')
+          ) {
+            e.preventDefault();
+            showWarning();
+            return false;
+          }
+        });
+      })();
+    </script>
+  </head>
+  <body class="h-full">
+    <div id="app" class="h-full"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
